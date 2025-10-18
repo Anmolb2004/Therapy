@@ -1,0 +1,191 @@
+/* frontend/src/index.css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary-color: #F97316;
+    --primary-color-dark: #EA580C;
+    --secondary-color: #111827;
+    --surface-color: #1F2937;
+    --background: #0F172A;
+    --text-main: #F9FAFB;
+    --text-light: #9CA3AF;
+    --border-color: #374151;
+  }
+  
+  body {
+    @apply bg-background text-text-main font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(249, 115, 22, 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(249, 115, 22, 0.08) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display text-text-main;
+  }
+  
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar { 
+    width: 10px; 
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track { 
+    background: transparent; 
+  }
+  ::-webkit-scrollbar-thumb { 
+    background: linear-gradient(180deg, #F97316 0%, #EA580C 100%);
+    border-radius: 10px;
+    border: 2px solid #1F2937;
+  }
+  ::-webkit-scrollbar-thumb:hover { 
+    background: linear-gradient(180deg, #FB923C 0%, #F97316 100%);
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { 
+      opacity: 0; 
+      transform: translateY(20px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+  
+  .animate-fadeIn {
+    animation: fadeIn 0.6s ease-out;
+  }
+  
+  .animate-slideInRight {
+    animation: slideInRight 0.5s ease-out;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Gradient Text */
+  .gradient-text {
+    background: linear-gradient(135deg, #F97316 0%, #FB923C 50%, #FDBA74 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glass Effect */
+  .glass-effect {
+    background: rgba(31, 41, 55, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(249, 115, 22, 0.1);
+  }
+
+  /* Custom Focus Styles */
+  *:focus-visible {
+    outline: 2px solid #F97316;
+    outline-offset: 2px;
+  }
+
+  /* Selection Color */
+  ::selection {
+    background-color: rgba(249, 115, 22, 0.3);
+    color: #F9FAFB;
+  }
+
+  /* Loading Shimmer Effect */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(31, 41, 55, 0.4) 0%,
+      rgba(249, 115, 22, 0.1) 50%,
+      rgba(31, 41, 55, 0.4) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  /* Button Hover Effect */
+  button, a {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Card Hover Lift */
+  .card-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(249, 115, 22, 0.2), 0 10px 10px -5px rgba(249, 115, 22, 0.1);
+  }
+
+  /* Gradient Border */
+  .gradient-border {
+    position: relative;
+    border-radius: 1rem;
+  }
+  
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    padding: 2px;
+    background: linear-gradient(135deg, #F97316, #EA580C, #FB923C);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+}
+
+/* Utility Classes */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
