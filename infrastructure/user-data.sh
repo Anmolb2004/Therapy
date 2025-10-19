@@ -11,7 +11,8 @@ curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 apt-get install -y nodejs
 
 # --- SECURELY FETCH API KEYS ---
-SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id SimulationEngineAPIKeys --region us-east-1 --query SecretString --output text)
+# Make sure this region is correct!
+SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id SimulationEngineAPIKeys --region us-west-2 --query SecretString --output text)
 OPENAI_KEY=$(echo $SECRET_JSON | jq -r .OPENAI_API_KEY)
 ANTHROPIC_KEY=$(echo $SECRET_JSON | jq -r .ANTHROPIC_API_KEY)
 
