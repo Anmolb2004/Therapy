@@ -40,9 +40,13 @@ export class InfrastructureStack extends cdk.Stack {
     const instance = new ec2.Instance(this, 'SimulationEngineInstance', {
       vpc,
       instanceType: new ec2.InstanceType('t2.micro'),
-      machineImage: new ec2.AmazonLinuxImage({
-        generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2023,
+      // --- CHANGE IS HERE ---
+      // We've replaced the Amazon Linux image with an Ubuntu image lookup.
+      machineImage: ec2.MachineImage.lookup({
+        name: 'ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*',
+        owners: ['099720109477'], // Canonical's AWS account ID for Ubuntu images
       }),
+      // --- END OF CHANGE ---
       securityGroup,
       role,
       keyName: 'sim-engine-key-new',
