@@ -8,7 +8,7 @@ import ConfigureSimulation from './pages/ConfigureSimulation';
 import ResultsPage from './pages/ResultsPage';
 import ChatModal from './components/ChatModal';
 
-const API_URL = 'http://127.0.0.1:8000';
+const API_URL = '';
 
 const THERAPIST_VERSIONS = [
   { id: 'v1_empathetic', name: 'V1 - Empathetic (GPT-4o)' },

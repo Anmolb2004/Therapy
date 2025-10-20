@@ -41,10 +41,9 @@ export class InfrastructureStack extends cdk.Stack {
       vpc,
       instanceType: new ec2.InstanceType('t2.micro'),
       // --- CHANGE IS HERE ---
-      // We've replaced the Amazon Linux image with an Ubuntu image lookup.
       machineImage: ec2.MachineImage.lookup({
         name: 'ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*',
-        owners: ['099720109477'], // Canonical's AWS account ID for Ubuntu images
+        owners: ['099720109477'], 
       }),
       // --- END OF CHANGE ---
       securityGroup,
