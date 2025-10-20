@@ -1,0 +1,21 @@
+# Web Server
+fastapi
+uvicorn
+gunicorn
+pydantic
+
+# Environment
+python-dotenv
+
+# LangChain Core & Agents
+langchain
+langgraph
+langchain-openai
+langchain-anthropic
+
+# Vector Store & Embeddings (for filtering script)
+langchain-community
+langchain-chroma
+chromadb
+langchain-huggingface
+sentence-transformers
