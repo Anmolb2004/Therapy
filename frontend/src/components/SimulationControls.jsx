@@ -4,12 +4,12 @@ import { FaPlay, FaRobot, FaListOl, FaBalanceScale, FaCheckCircle } from 'react-
 function SimulationControls({ 
   therapistVersions, 
   selectedTherapistIds, 
-  onTherapistSelect,  // Changed from handleTherapistSelection
+  onTherapistSelect,
   evaluationVersions, 
   selectedEvaluation, 
-  onEvaluationSelect,  // Changed from setSelectedEvaluation
+  onEvaluationSelect,
   numTurns, 
-  onNumTurnsChange,    // Changed from setNumTurns
+  onNumTurnsChange,
   onRunSimulation, 
   isLoading, 
   selectedPersonaCount 
@@ -18,7 +18,7 @@ function SimulationControls({
   
   return (
     <div className="p-8 space-y-8">
-      {/* Therapist Models Section */}
+      {/* Therapist Models Section (No changes here) */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <label className="text-xl font-semibold font-display flex items-center gap-3">
@@ -77,7 +77,7 @@ function SimulationControls({
 
       {/* Evaluation & Turns Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Evaluation Selector */}
+        {/* Evaluation Selector (No changes here) */}
         <div className="space-y-3">
           <label htmlFor="eval-version" className="text-xl font-semibold font-display flex items-center gap-3">
             <FaBalanceScale className="text-primary" /> Evaluation Criteria
@@ -107,33 +107,34 @@ function SimulationControls({
           </p>
         </div>
 
-        {/* Number of Turns */}
+        {/* --- FIX START: Redesigned the slider to be visually consistent --- */}
         <div className="space-y-3">
-          <label htmlFor="num-turns" className="text-xl font-semibold font-display flex items-center gap-3">
+          <label htmlFor="num-turns-slider" className="text-xl font-semibold font-display flex items-center gap-3">
             <FaListOl className="text-primary" /> Conversation Turns
           </label>
-          <div className="relative">
-            <input 
-              type="number" 
-              id="num-turns" 
-              value={numTurns} 
-              onChange={(e) => onNumTurnsChange(Number(e.target.value))} 
-              min="1" 
-              max="20" 
-              disabled={isLoading} 
-              className="w-full p-4 rounded-xl bg-surface border-2 border-border-color text-text-main font-medium focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:border-primary/50"
+          {/* This container now perfectly mimics the select box's style and height */}
+          <div className="flex items-center gap-4 w-full p-4 rounded-xl bg-surface border-2 border-border-color transition-all hover:border-primary/50">
+            <input
+              id="num-turns-slider"
+              type="range"
+              min="1"
+              max="20"
+              step="1"
+              value={numTurns}
+              onChange={(e) => onNumTurnsChange(e.target.valueAsNumber)}
+              disabled={isLoading}
+              className="w-full h-2 bg-border-color rounded-lg appearance-none cursor-pointer accent-primary disabled:opacity-50 disabled:cursor-not-allowed"
             />
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-text-light text-sm font-semibold">
-              turns
-            </div>
+            <span className="w-12 text-center px-3 py-1 bg-primary/10 text-primary font-bold text-lg rounded-md">
+              {numTurns}
+            </span>
           </div>
-          <p className="text-xs text-text-light">
-            {numTurns <= 3 ? 'Quick test' : numTurns <= 7 ? 'Standard session' : 'Comprehensive evaluation'}
-          </p>
+          <p className="text-xs text-text-light">{numTurns <= 3 ? 'Quick Test' : numTurns <= 8 ? 'Standard Session' : 'Comprehensive Evaluation'}</p>
         </div>
+        {/* --- FIX END --- */}
       </div>
 
-      {/* Run Simulation Button */}
+      {/* Run Simulation Button (No changes here) */}
       <div className="pt-4">
         <button 
           onClick={onRunSimulation} 
