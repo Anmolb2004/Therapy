@@ -1,4 +1,4 @@
-# Web Server
+# Web server
 fastapi
 uvicorn
 gunicorn
@@ -13,9 +13,20 @@ langgraph
 langchain-openai
 langchain-anthropic
 
-# Vector Store & Embeddings (for filtering script)
+# Vector Store & Embeddings
 langchain-community
 langchain-chroma
 chromadb
 langchain-huggingface
 sentence-transformers
+
+# Task Queue
+celery
+redis
+
+# Database
+sqlalchemy
+psycopg2-binary
+
+# AWS SDK
+boto3

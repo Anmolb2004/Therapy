@@ -1,0 +1,59 @@
+version: '3.8' # You can remove this line if Docker warns about it
+
+services:
+  redis:
+    image: redis:6-alpine
+    container_name: sim-redis # Added container names for clarity
+    ports:
+      - "6379:6379"
+
+  postgres:
+    image: postgres:13-alpine
+    container_name: sim-postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432" # Expose Postgres port to host if needed for direct connection
+    environment:
+      # These credentials must match DATABASE_URL in your code/env
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=simdb
+
+  api:
+    build: .
+    container_name: sim-api
+    command: gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8000
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    env_file: ./backend/.env
+    environment:
+      # These tell the API how to connect to the other services by their names
+      - CELERY_BROKER_URL=redis://sim-redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://sim-redis:6379/0
+      - DATABASE_URL=postgresql://user:password@sim-postgres/simdb
+    depends_on:
+      - redis
+      - postgres # API depends on the database and Redis being ready
+
+  worker:
+    build: .
+    container_name: sim-worker
+    command: celery -A worker.celery_app worker --loglevel=info
+    volumes:
+      - ./backend:/app
+    env_file: ./backend/.env
+    environment:
+      - CELERY_BROKER_URL=redis://sim-redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://sim-redis:6379/0
+      - DATABASE_URL=postgresql://user:password@sim-postgres/simdb
+    depends_on:
+      - redis
+      - api # Worker often depends on API code/models
+      - postgres # Worker needs the database
+
+# Define the persistent volume for PostgreSQL data
+volumes:
+  postgres_data:

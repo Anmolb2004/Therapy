@@ -8,7 +8,8 @@ import ConfigureSimulation from './pages/ConfigureSimulation';
 import ResultsPage from './pages/ResultsPage';
 import ChatModal from './components/ChatModal';
 
-const API_URL = '';
+// --- CORRECTED for Vite: Use import.meta.env ---
+const API_URL = "http://simula-albae-uvqkllrso5kl-1348279005.us-west-2.elb.amazonaws.com";
 
 const THERAPIST_VERSIONS = [
   { id: 'v1_empathetic', name: 'V1 - Empathetic (GPT-4o)' },
@@ -27,12 +28,14 @@ const EVALUATION_VERSIONS = [
 function App() {
   const navigate = useNavigate();
 
-  // --- LIFTED STATE: All state is managed here in the parent component ---
+  // --- LIFTED STATE: All state is managed here ---
   const [personas, setPersonas] = useState([]);
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTranscript, setActiveTranscript] = useState(null);
+  const [loadingMessage, setLoadingMessage] = useState('');
 
+  // --- Form Selection State ---
   const [selectedPersonaIds, setSelectedPersonaIds] = useState(new Set());
   const [selectedTherapistIds, setSelectedTherapistIds] = useState(new Set(['v2_cbt', 'v4_claude_cbt']));
   const [selectedEvaluation, setSelectedEvaluation] = useState(EVALUATION_VERSIONS[0].id);
@@ -57,6 +60,35 @@ function App() {
     setState(newSelectedIds);
   };
 
+  // The new polling function to check for job status
+  const pollForResults = (jobId) => {
+    const intervalId = setInterval(async () => {
+      try {
+        const response = await axios.get(`${API_URL}/results/${jobId}`);
+        const { status, progress, results: jobResults, errorMessage } = response.data;
+
+        if (status === 'RUNNING') {
+          setLoadingMessage(`Simulation in progress... (${progress})`);
+          if (jobResults) setResults(jobResults);
+        } else if (status === 'COMPLETE') {
+          setLoadingMessage('Simulation complete!');
+          setResults(jobResults);
+          setIsLoading(false);
+          clearInterval(intervalId);
+        } else if (status === 'FAILED') {
+          alert(`The simulation failed: ${errorMessage}`);
+          setIsLoading(false);
+          clearInterval(intervalId);
+        }
+      } catch (error) {
+        console.error("Polling failed:", error);
+      }
+    }, 3000); // Check every 3 seconds
+
+    return intervalId;
+  };
+
+  // The updated simulation handler
   const handleRunSimulation = async () => {
     if (selectedPersonaIds.size === 0 || selectedTherapistIds.size === 0) {
       alert("Please select at least one persona and one therapist version.");
@@ -66,6 +98,7 @@ function App() {
     navigate('/results');
     setIsLoading(true);
     setResults([]);
+    setLoadingMessage("Sending job to the simulation engine...");
     
     const requestBody = {
       persona_ids: Array.from(selectedPersonaIds),
@@ -75,13 +108,15 @@ function App() {
     };
 
     try {
-      const response = await axios.post(`${API_URL}/run-simulation`, requestBody);
-      setResults(response.data.results);
+      const response = await axios.post(`${API_URL}/start-simulation`, requestBody);
+      const { job_id } = response.data;
+      setLoadingMessage("Job queued! Waiting for a worker...");
+      pollForResults(job_id);
     } catch (error) {
-      console.error("Failed to run simulations:", error);
-      alert("An error occurred. Check the console for details.");
+      console.error("Failed to start simulation:", error);
+      alert("An error occurred. Could not start the simulation job.");
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const Header = () => (
@@ -102,6 +137,7 @@ function App() {
       <Header />
       <ChatModal transcript={activeTranscript} onClose={() => setActiveTranscript(null)} />
       <Routes>
+        {/* --- THIS IS THE FULLY CORRECTED SECTION --- */}
         <Route 
           path="/" 
           element={
@@ -126,6 +162,7 @@ function App() {
               onNumTurnsChange={setNumTurns}
               onRunSimulation={handleRunSimulation}
               isLoading={isLoading}
+              loadingMessage={loadingMessage}
               selectedPersonaCount={selectedPersonaIds.size}
             />
           } 
@@ -136,11 +173,13 @@ function App() {
             <ResultsPage 
               results={results}
               isLoading={isLoading}
+              loadingMessage={loadingMessage}
               onShowTranscript={setActiveTranscript}
               therapistVersions={THERAPIST_VERSIONS}
             />
           } 
         />
+        {/* --- END OF CORRECTIONS --- */}
       </Routes>
     </div>
   );

@@ -34,7 +34,7 @@ documents = loader.load()
 
 print("Extracting and parsing persona descriptions...")
 clean_persona_texts = []
-# Loop through the first 50,000 documents to extract clean text
+# Loop through the first 1,00,000 documents to extract clean text
 for doc in documents[:100000]:
     try:
         # The page_content is a JSON string, so we must parse it first

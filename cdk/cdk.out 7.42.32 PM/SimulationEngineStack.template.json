@@ -1,0 +1,2506 @@
+{
+ "Resources": {
+  "SimEngineVPCACB4DB3F": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SimulationEngineStack/SimEngineVPC"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/Resource"
+   }
+  },
+  "SimEngineVPCPublicSubnet1Subnet809EB78F": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.0.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "SimulationEngineStack/SimEngineVPC/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimEngineVPCACB4DB3F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PublicSubnet1/Subnet"
+   }
+  },
+  "SimEngineVPCPublicSubnet1RouteTable71BD4AF1": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SimulationEngineStack/SimEngineVPC/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimEngineVPCACB4DB3F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PublicSubnet1/RouteTable"
+   }
+  },
+  "SimEngineVPCPublicSubnet1RouteTableAssociation14FB593A": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "SimEngineVPCPublicSubnet1RouteTable71BD4AF1"
+    },
+    "SubnetId": {
+     "Ref": "SimEngineVPCPublicSubnet1Subnet809EB78F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PublicSubnet1/RouteTableAssociation"
+   }
+  },
+  "SimEngineVPCPublicSubnet1DefaultRouteCC3686F3": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "SimEngineVPCIGW263555E3"
+    },
+    "RouteTableId": {
+     "Ref": "SimEngineVPCPublicSubnet1RouteTable71BD4AF1"
+    }
+   },
+   "DependsOn": [
+    "SimEngineVPCVPCGW480E0876"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PublicSubnet1/DefaultRoute"
+   }
+  },
+  "SimEngineVPCPublicSubnet1EIP435AD8CA": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SimulationEngineStack/SimEngineVPC/PublicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PublicSubnet1/EIP"
+   }
+  },
+  "SimEngineVPCPublicSubnet1NATGateway4747FB32": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "SimEngineVPCPublicSubnet1EIP435AD8CA",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "SimEngineVPCPublicSubnet1Subnet809EB78F"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SimulationEngineStack/SimEngineVPC/PublicSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "SimEngineVPCPublicSubnet1DefaultRouteCC3686F3",
+    "SimEngineVPCPublicSubnet1RouteTableAssociation14FB593A"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PublicSubnet1/NATGateway"
+   }
+  },
+  "SimEngineVPCPublicSubnet2SubnetF3EA15F0": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.64.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "SimulationEngineStack/SimEngineVPC/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimEngineVPCACB4DB3F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PublicSubnet2/Subnet"
+   }
+  },
+  "SimEngineVPCPublicSubnet2RouteTable69EFDA46": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SimulationEngineStack/SimEngineVPC/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimEngineVPCACB4DB3F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PublicSubnet2/RouteTable"
+   }
+  },
+  "SimEngineVPCPublicSubnet2RouteTableAssociation02EBB863": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "SimEngineVPCPublicSubnet2RouteTable69EFDA46"
+    },
+    "SubnetId": {
+     "Ref": "SimEngineVPCPublicSubnet2SubnetF3EA15F0"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PublicSubnet2/RouteTableAssociation"
+   }
+  },
+  "SimEngineVPCPublicSubnet2DefaultRouteD8AF8CDF": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "SimEngineVPCIGW263555E3"
+    },
+    "RouteTableId": {
+     "Ref": "SimEngineVPCPublicSubnet2RouteTable69EFDA46"
+    }
+   },
+   "DependsOn": [
+    "SimEngineVPCVPCGW480E0876"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PublicSubnet2/DefaultRoute"
+   }
+  },
+  "SimEngineVPCPrivateSubnet1Subnet56C1A145": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.128.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "SimulationEngineStack/SimEngineVPC/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimEngineVPCACB4DB3F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PrivateSubnet1/Subnet"
+   }
+  },
+  "SimEngineVPCPrivateSubnet1RouteTableF64B87E9": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SimulationEngineStack/SimEngineVPC/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimEngineVPCACB4DB3F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PrivateSubnet1/RouteTable"
+   }
+  },
+  "SimEngineVPCPrivateSubnet1RouteTableAssociationE91B7657": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "SimEngineVPCPrivateSubnet1RouteTableF64B87E9"
+    },
+    "SubnetId": {
+     "Ref": "SimEngineVPCPrivateSubnet1Subnet56C1A145"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PrivateSubnet1/RouteTableAssociation"
+   }
+  },
+  "SimEngineVPCPrivateSubnet1DefaultRouteC6AAE4DC": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "SimEngineVPCPublicSubnet1NATGateway4747FB32"
+    },
+    "RouteTableId": {
+     "Ref": "SimEngineVPCPrivateSubnet1RouteTableF64B87E9"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PrivateSubnet1/DefaultRoute"
+   }
+  },
+  "SimEngineVPCPrivateSubnet2Subnet107E875D": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.192.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "SimulationEngineStack/SimEngineVPC/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimEngineVPCACB4DB3F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PrivateSubnet2/Subnet"
+   }
+  },
+  "SimEngineVPCPrivateSubnet2RouteTable17360A44": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SimulationEngineStack/SimEngineVPC/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimEngineVPCACB4DB3F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PrivateSubnet2/RouteTable"
+   }
+  },
+  "SimEngineVPCPrivateSubnet2RouteTableAssociation26FA1603": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "SimEngineVPCPrivateSubnet2RouteTable17360A44"
+    },
+    "SubnetId": {
+     "Ref": "SimEngineVPCPrivateSubnet2Subnet107E875D"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PrivateSubnet2/RouteTableAssociation"
+   }
+  },
+  "SimEngineVPCPrivateSubnet2DefaultRoute3700B20F": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "SimEngineVPCPublicSubnet1NATGateway4747FB32"
+    },
+    "RouteTableId": {
+     "Ref": "SimEngineVPCPrivateSubnet2RouteTable17360A44"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/PrivateSubnet2/DefaultRoute"
+   }
+  },
+  "SimEngineVPCIGW263555E3": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SimulationEngineStack/SimEngineVPC"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/IGW"
+   }
+  },
+  "SimEngineVPCVPCGW480E0876": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "SimEngineVPCIGW263555E3"
+    },
+    "VpcId": {
+     "Ref": "SimEngineVPCACB4DB3F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/VPCGW"
+   }
+  },
+  "SimEngineVPCRestrictDefaultSecurityGroupCustomResource67BAC303": {
+   "Type": "Custom::VpcRestrictDefaultSG",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E",
+      "Arn"
+     ]
+    },
+    "DefaultSecurityGroupId": {
+     "Fn::GetAtt": [
+      "SimEngineVPCACB4DB3F",
+      "DefaultSecurityGroup"
+     ]
+    },
+    "Account": {
+     "Ref": "AWS::AccountId"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineVPC/RestrictDefaultSecurityGroupCustomResource/Default"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:AuthorizeSecurityGroupEgress",
+          "ec2:RevokeSecurityGroupIngress",
+          "ec2:RevokeSecurityGroupEgress"
+         ],
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:",
+             {
+              "Ref": "AWS::Partition"
+             },
+             ":ec2:",
+             {
+              "Ref": "AWS::Region"
+             },
+             ":",
+             {
+              "Ref": "AWS::AccountId"
+             },
+             ":security-group/",
+             {
+              "Fn::GetAtt": [
+               "SimEngineVPCACB4DB3F",
+               "DefaultSecurityGroup"
+              ]
+             }
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
+   },
+   "DependsOn": [
+    "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
+    "aws:asset:property": "Code"
+   }
+  },
+  "AlbSg1155C1BE": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "SimulationEngineStack/AlbSg",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow HTTP from anywhere",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimEngineVPCACB4DB3F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/AlbSg/Resource"
+   }
+  },
+  "EcsSg17B4B0B3": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "SimulationEngineStack/EcsSg",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimEngineVPCACB4DB3F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/EcsSg/Resource"
+   }
+  },
+  "EcsSgfromSimulationEngineStackAlbSg597F2BC380009DBDF65A": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow traffic from ALB",
+    "FromPort": 8000,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "EcsSg17B4B0B3",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "AlbSg1155C1BE",
+      "GroupId"
+     ]
+    },
+    "ToPort": 8000
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/EcsSg/from SimulationEngineStackAlbSg597F2BC3:8000"
+   }
+  },
+  "RedisSgFB48DCCD": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "SimulationEngineStack/RedisSg",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimEngineVPCACB4DB3F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/RedisSg/Resource"
+   }
+  },
+  "RedisSgfromSimulationEngineStackEcsSg2142DDCD63795B2B0D9D": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow traffic from ECS",
+    "FromPort": 6379,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "RedisSgFB48DCCD",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "EcsSg17B4B0B3",
+      "GroupId"
+     ]
+    },
+    "ToPort": 6379
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/RedisSg/from SimulationEngineStackEcsSg2142DDCD:6379"
+   }
+  },
+  "DbSg495F8305": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "SimulationEngineStack/DbSg",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "SimEngineVPCACB4DB3F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/DbSg/Resource"
+   }
+  },
+  "DbSgfromSimulationEngineStackEcsSg2142DDCD54324B988A21": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow traffic from ECS",
+    "FromPort": 5432,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "DbSg495F8305",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "EcsSg17B4B0B3",
+      "GroupId"
+     ]
+    },
+    "ToPort": 5432
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/DbSg/from SimulationEngineStackEcsSg2142DDCD:5432"
+   }
+  },
+  "SimEngineCluster40B92417": {
+   "Type": "AWS::ECS::Cluster",
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineCluster/Resource"
+   }
+  },
+  "EcsTaskRole8DFA0181": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/EcsTaskRole/Resource"
+   }
+  },
+  "EcsTaskRoleDefaultPolicy50882C77": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":secretsmanager:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":secret:SimulationEngineAPIKeys-??????"
+          ]
+         ]
+        },
+        {
+         "Ref": "DBCredentialsSecretAFB45EA2"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "EcsTaskRoleDefaultPolicy50882C77",
+    "Roles": [
+     {
+      "Ref": "EcsTaskRole8DFA0181"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/EcsTaskRole/DefaultPolicy/Resource"
+   }
+  },
+  "DBCredentialsSecretAFB45EA2": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "GenerateSecretString": {
+     "ExcludePunctuation": true,
+     "GenerateStringKey": "password",
+     "IncludeSpace": false,
+     "SecretStringTemplate": "{\"username\":\"sim_user\",\"dbClusterIdentifier\":\"simdb\",\"host\":\"\",\"port\":5432,\"dbname\":\"simdb\"}"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/DBCredentialsSecret/Resource"
+   }
+  },
+  "DBCredentialsSecretAttachment8D28662C": {
+   "Type": "AWS::SecretsManager::SecretTargetAttachment",
+   "Properties": {
+    "SecretId": {
+     "Ref": "DBCredentialsSecretAFB45EA2"
+    },
+    "TargetId": {
+     "Ref": "PostgresDB113281D2"
+    },
+    "TargetType": "AWS::RDS::DBInstance"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/DBCredentialsSecret/Attachment/Resource"
+   }
+  },
+  "PostgresDBSubnetGroup5D444ECC": {
+   "Type": "AWS::RDS::DBSubnetGroup",
+   "Properties": {
+    "DBSubnetGroupDescription": "Subnet group for PostgresDB database",
+    "SubnetIds": [
+     {
+      "Ref": "SimEngineVPCPrivateSubnet1Subnet56C1A145"
+     },
+     {
+      "Ref": "SimEngineVPCPrivateSubnet2Subnet107E875D"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/PostgresDB/SubnetGroup/Default"
+   }
+  },
+  "PostgresDB113281D2": {
+   "Type": "AWS::RDS::DBInstance",
+   "Properties": {
+    "AllocatedStorage": "100",
+    "CopyTagsToSnapshot": true,
+    "DBInstanceClass": "db.t3.micro",
+    "DBName": "simdb",
+    "DBSubnetGroupName": {
+     "Ref": "PostgresDBSubnetGroup5D444ECC"
+    },
+    "Engine": "postgres",
+    "EngineVersion": "13",
+    "MasterUserPassword": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "DBCredentialsSecretAFB45EA2"
+       },
+       ":SecretString:password::}}"
+      ]
+     ]
+    },
+    "MasterUsername": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "DBCredentialsSecretAFB45EA2"
+       },
+       ":SecretString:username::}}"
+      ]
+     ]
+    },
+    "PubliclyAccessible": false,
+    "StorageType": "gp2",
+    "VPCSecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "DbSg495F8305",
+       "GroupId"
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/PostgresDB/Resource"
+   }
+  },
+  "RedisSubnetGroup": {
+   "Type": "AWS::ElastiCache::SubnetGroup",
+   "Properties": {
+    "Description": "Subnet group for Redis",
+    "SubnetIds": [
+     {
+      "Ref": "SimEngineVPCPrivateSubnet1Subnet56C1A145"
+     },
+     {
+      "Ref": "SimEngineVPCPrivateSubnet2Subnet107E875D"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/RedisSubnetGroup"
+   }
+  },
+  "RedisCluster": {
+   "Type": "AWS::ElastiCache::CacheCluster",
+   "Properties": {
+    "CacheNodeType": "cache.t3.micro",
+    "CacheSubnetGroupName": {
+     "Ref": "RedisSubnetGroup"
+    },
+    "Engine": "redis",
+    "NumCacheNodes": 1,
+    "VpcSecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "RedisSgFB48DCCD",
+       "GroupId"
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/RedisCluster"
+   }
+  },
+  "SimEngineTaskDefA9AC75F7": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Command": [
+       "gunicorn",
+       "-w",
+       "2",
+       "-k",
+       "uvicorn.workers.UvicornWorker",
+       "main:app",
+       "--bind",
+       "0.0.0.0:8000"
+      ],
+      "Environment": [
+       {
+        "Name": "CELERY_BROKER_URL",
+        "Value": {
+         "Fn::Join": [
+          "",
+          [
+           "redis://",
+           {
+            "Fn::GetAtt": [
+             "RedisCluster",
+             "RedisEndpoint.Address"
+            ]
+           },
+           ":",
+           {
+            "Fn::GetAtt": [
+             "RedisCluster",
+             "RedisEndpoint.Port"
+            ]
+           },
+           "/0"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "CELERY_RESULT_BACKEND",
+        "Value": {
+         "Fn::Join": [
+          "",
+          [
+           "redis://",
+           {
+            "Fn::GetAtt": [
+             "RedisCluster",
+             "RedisEndpoint.Address"
+            ]
+           },
+           ":",
+           {
+            "Fn::GetAtt": [
+             "RedisCluster",
+             "RedisEndpoint.Port"
+            ]
+           },
+           "/0"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "DB_SECRET_ARN",
+        "Value": {
+         "Ref": "DBCredentialsSecretAFB45EA2"
+        }
+       },
+       {
+        "Name": "DB_HOST",
+        "Value": {
+         "Fn::GetAtt": [
+          "PostgresDB113281D2",
+          "Endpoint.Address"
+         ]
+        }
+       },
+       {
+        "Name": "AWS_REGION",
+        "Value": {
+         "Ref": "AWS::Region"
+        }
+       }
+      ],
+      "Essential": true,
+      "Image": {
+       "Fn::Join": [
+        "",
+        [
+         {
+          "Ref": "AWS::AccountId"
+         },
+         ".dkr.ecr.",
+         {
+          "Ref": "AWS::Region"
+         },
+         ".",
+         {
+          "Ref": "AWS::URLSuffix"
+         },
+         "/vectorialasync-api:latest"
+        ]
+       ]
+      },
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "SimEngineTaskDefApiContainerLogGroup950057DD"
+        },
+        "awslogs-stream-prefix": "SimEngineApi",
+        "awslogs-region": {
+         "Ref": "AWS::Region"
+        }
+       }
+      },
+      "Name": "ApiContainer",
+      "PortMappings": [
+       {
+        "ContainerPort": 8000,
+        "Protocol": "tcp"
+       }
+      ],
+      "Secrets": [
+       {
+        "Name": "OPENAI_API_KEY",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":secretsmanager:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":secret:SimulationEngineAPIKeys:OPENAI_API_KEY::"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "ANTHROPIC_API_KEY",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":secretsmanager:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":secret:SimulationEngineAPIKeys:ANTHROPIC_API_KEY::"
+          ]
+         ]
+        }
+       }
+      ]
+     },
+     {
+      "Command": [
+       "celery",
+       "-A",
+       "worker.celery_app",
+       "worker",
+       "--loglevel=info"
+      ],
+      "Environment": [
+       {
+        "Name": "CELERY_BROKER_URL",
+        "Value": {
+         "Fn::Join": [
+          "",
+          [
+           "redis://",
+           {
+            "Fn::GetAtt": [
+             "RedisCluster",
+             "RedisEndpoint.Address"
+            ]
+           },
+           ":",
+           {
+            "Fn::GetAtt": [
+             "RedisCluster",
+             "RedisEndpoint.Port"
+            ]
+           },
+           "/0"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "CELERY_RESULT_BACKEND",
+        "Value": {
+         "Fn::Join": [
+          "",
+          [
+           "redis://",
+           {
+            "Fn::GetAtt": [
+             "RedisCluster",
+             "RedisEndpoint.Address"
+            ]
+           },
+           ":",
+           {
+            "Fn::GetAtt": [
+             "RedisCluster",
+             "RedisEndpoint.Port"
+            ]
+           },
+           "/0"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "DB_SECRET_ARN",
+        "Value": {
+         "Ref": "DBCredentialsSecretAFB45EA2"
+        }
+       },
+       {
+        "Name": "DB_HOST",
+        "Value": {
+         "Fn::GetAtt": [
+          "PostgresDB113281D2",
+          "Endpoint.Address"
+         ]
+        }
+       },
+       {
+        "Name": "AWS_REGION",
+        "Value": {
+         "Ref": "AWS::Region"
+        }
+       }
+      ],
+      "Essential": true,
+      "Image": {
+       "Fn::Join": [
+        "",
+        [
+         {
+          "Ref": "AWS::AccountId"
+         },
+         ".dkr.ecr.",
+         {
+          "Ref": "AWS::Region"
+         },
+         ".",
+         {
+          "Ref": "AWS::URLSuffix"
+         },
+         "/vectorialasync-api:latest"
+        ]
+       ]
+      },
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "SimEngineTaskDefWorkerContainerLogGroupA0384152"
+        },
+        "awslogs-stream-prefix": "SimEngineWorker",
+        "awslogs-region": {
+         "Ref": "AWS::Region"
+        }
+       }
+      },
+      "Name": "WorkerContainer",
+      "Secrets": [
+       {
+        "Name": "OPENAI_API_KEY",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":secretsmanager:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":secret:SimulationEngineAPIKeys:OPENAI_API_KEY::"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "ANTHROPIC_API_KEY",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":secretsmanager:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":secret:SimulationEngineAPIKeys:ANTHROPIC_API_KEY::"
+          ]
+         ]
+        }
+       }
+      ]
+     }
+    ],
+    "Cpu": "1024",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "SimEngineTaskDefExecutionRole08BF2B6B",
+      "Arn"
+     ]
+    },
+    "Family": "SimulationEngineStackSimEngineTaskDefD6DE5234",
+    "Memory": "2048",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "EcsTaskRole8DFA0181",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineTaskDef/Resource"
+   }
+  },
+  "SimEngineTaskDefApiContainerLogGroup950057DD": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "RetentionInDays": 7
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineTaskDef/ApiContainer/LogGroup/Resource"
+   }
+  },
+  "SimEngineTaskDefExecutionRole08BF2B6B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineTaskDef/ExecutionRole/Resource"
+   }
+  },
+  "SimEngineTaskDefExecutionRoleDefaultPolicyCCC075BB": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":ecr:",
+          {
+           "Ref": "AWS::Region"
+          },
+          ":",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":repository/vectorialasync-api"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": "ecr:GetAuthorizationToken",
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "SimEngineTaskDefApiContainerLogGroup950057DD",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "SimEngineTaskDefWorkerContainerLogGroupA0384152",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":secretsmanager:",
+          {
+           "Ref": "AWS::Region"
+          },
+          ":",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":secret:SimulationEngineAPIKeys-??????"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "SimEngineTaskDefExecutionRoleDefaultPolicyCCC075BB",
+    "Roles": [
+     {
+      "Ref": "SimEngineTaskDefExecutionRole08BF2B6B"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineTaskDef/ExecutionRole/DefaultPolicy/Resource"
+   }
+  },
+  "SimEngineTaskDefWorkerContainerLogGroupA0384152": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "RetentionInDays": 7
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/SimEngineTaskDef/WorkerContainer/LogGroup/Resource"
+   }
+  },
+  "ALBAEE750D2": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "AlbSg1155C1BE",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Ref": "SimEngineVPCPublicSubnet1Subnet809EB78F"
+     },
+     {
+      "Ref": "SimEngineVPCPublicSubnet2SubnetF3EA15F0"
+     }
+    ],
+    "Type": "application"
+   },
+   "DependsOn": [
+    "SimEngineVPCPublicSubnet1DefaultRouteCC3686F3",
+    "SimEngineVPCPublicSubnet1RouteTableAssociation14FB593A",
+    "SimEngineVPCPublicSubnet2DefaultRouteD8AF8CDF",
+    "SimEngineVPCPublicSubnet2RouteTableAssociation02EBB863"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/ALB/Resource"
+   }
+  },
+  "ALBListener3B99FF85": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "ALBListenerECSTargetGroupD95BA00C"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "ALBAEE750D2"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/ALB/Listener/Resource"
+   }
+  },
+  "ALBListenerECSTargetGroupD95BA00C": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "Port": 8000,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Ref": "SimEngineVPCACB4DB3F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/ALB/Listener/ECSTargetGroup/Resource"
+   }
+  },
+  "ApiServiceC9037CF0": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "SimEngineCluster40B92417"
+    },
+    "DeploymentConfiguration": {
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 1,
+    "EnableECSManagedTags": false,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LaunchType": "FARGATE",
+    "LoadBalancers": [
+     {
+      "ContainerName": "ApiContainer",
+      "ContainerPort": 8000,
+      "TargetGroupArn": {
+       "Ref": "ALBListenerECSTargetGroupD95BA00C"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "EcsSg17B4B0B3",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Ref": "SimEngineVPCPrivateSubnet1Subnet56C1A145"
+       },
+       {
+        "Ref": "SimEngineVPCPrivateSubnet2Subnet107E875D"
+       }
+      ]
+     }
+    },
+    "TaskDefinition": {
+     "Ref": "SimEngineTaskDefA9AC75F7"
+    }
+   },
+   "DependsOn": [
+    "ALBListenerECSTargetGroupD95BA00C",
+    "ALBListener3B99FF85",
+    "EcsTaskRoleDefaultPolicy50882C77",
+    "EcsTaskRole8DFA0181"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/ApiService/Service"
+   }
+  },
+  "WorkerService99815FA9": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "SimEngineCluster40B92417"
+    },
+    "DeploymentConfiguration": {
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 1,
+    "EnableECSManagedTags": false,
+    "LaunchType": "FARGATE",
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "EcsSg17B4B0B3",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Ref": "SimEngineVPCPrivateSubnet1Subnet56C1A145"
+       },
+       {
+        "Ref": "SimEngineVPCPrivateSubnet2Subnet107E875D"
+       }
+      ]
+     }
+    },
+    "TaskDefinition": {
+     "Ref": "SimEngineTaskDefA9AC75F7"
+    }
+   },
+   "DependsOn": [
+    "EcsTaskRoleDefaultPolicy50882C77",
+    "EcsTaskRole8DFA0181"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/WorkerService/Service"
+   }
+  },
+  "FrontendBucketEFE2E19C": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     },
+     {
+      "Key": "aws-cdk:cr-owned:4fc64e57",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/FrontendBucket/Resource"
+   }
+  },
+  "FrontendBucketPolicy1DFF75D9": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "FrontendBucketEFE2E19C"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:PutBucketPolicy"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "FrontendBucketEFE2E19C",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "FrontendBucketEFE2E19C",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "CanonicalUser": {
+         "Fn::GetAtt": [
+          "OAIE1EFC67F",
+          "S3CanonicalUserId"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "FrontendBucketEFE2E19C",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "FrontendBucketEFE2E19C",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "s3:GetObject",
+       "Effect": "Allow",
+       "Principal": {
+        "CanonicalUser": {
+         "Fn::GetAtt": [
+          "OAIE1EFC67F",
+          "S3CanonicalUserId"
+         ]
+        }
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "FrontendBucketEFE2E19C",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/FrontendBucket/Policy/Resource"
+   }
+  },
+  "FrontendBucketAutoDeleteObjectsCustomResourceDB860B32": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "FrontendBucketEFE2E19C"
+    }
+   },
+   "DependsOn": [
+    "FrontendBucketPolicy1DFF75D9"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/FrontendBucket/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Lambda function for auto-deleting objects in ",
+       {
+        "Ref": "FrontendBucketEFE2E19C"
+       },
+       " S3 bucket."
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6",
+    "aws:asset:property": "Code"
+   }
+  },
+  "OAIE1EFC67F": {
+   "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+   "Properties": {
+    "CloudFrontOriginAccessIdentityConfig": {
+     "Comment": "Allows CloudFront to reach the bucket"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/OAI/Resource"
+   }
+  },
+  "Distribution830FAC52": {
+   "Type": "AWS::CloudFront::Distribution",
+   "Properties": {
+    "DistributionConfig": {
+     "DefaultCacheBehavior": {
+      "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+      "Compress": true,
+      "TargetOriginId": "SimulationEngineStackDistributionOrigin133427372",
+      "ViewerProtocolPolicy": "redirect-to-https"
+     },
+     "DefaultRootObject": "index.html",
+     "Enabled": true,
+     "HttpVersion": "http2",
+     "IPV6Enabled": true,
+     "Origins": [
+      {
+       "DomainName": {
+        "Fn::GetAtt": [
+         "FrontendBucketEFE2E19C",
+         "RegionalDomainName"
+        ]
+       },
+       "Id": "SimulationEngineStackDistributionOrigin133427372",
+       "S3OriginConfig": {
+        "OriginAccessIdentity": {
+         "Fn::Join": [
+          "",
+          [
+           "origin-access-identity/cloudfront/",
+           {
+            "Ref": "OAIE1EFC67F"
+           }
+          ]
+         ]
+        }
+       }
+      }
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/Distribution/Resource"
+   }
+  },
+  "DeployFrontendAwsCliLayerD774ED8F": {
+   "Type": "AWS::Lambda::LayerVersion",
+   "Properties": {
+    "Content": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "c49d356cac773d491c5f7ac148995a1181498a8e289429f8612a7f7e3814f535.zip"
+    },
+    "Description": "/opt/awscli/aws"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/DeployFrontend/AwsCliLayer/Resource",
+    "aws:asset:path": "asset.c49d356cac773d491c5f7ac148995a1181498a8e289429f8612a7f7e3814f535.zip",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Content"
+   }
+  },
+  "DeployFrontendCustomResource3E02C3B7": {
+   "Type": "Custom::CDKBucketDeployment",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
+      "Arn"
+     ]
+    },
+    "SourceBucketNames": [
+     {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     }
+    ],
+    "SourceObjectKeys": [
+     "eff40a15dc621f79d678ab2cfbe7a8921c03b52109a66eb928ea5a2f39c9ea5c.zip"
+    ],
+    "DestinationBucketName": {
+     "Ref": "FrontendBucketEFE2E19C"
+    },
+    "WaitForDistributionInvalidation": true,
+    "Prune": true,
+    "DistributionId": {
+     "Ref": "Distribution830FAC52"
+    },
+    "DistributionPaths": [
+     "/*"
+    ],
+    "OutputObjectKeys": true
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/DeployFrontend/CustomResource/Default"
+   }
+  },
+  "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/Resource"
+   }
+  },
+  "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":s3:::",
+           {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+           },
+           "/*"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":s3:::",
+           {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+           }
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "FrontendBucketEFE2E19C",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "FrontendBucketEFE2E19C",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "cloudfront:CreateInvalidation",
+        "cloudfront:GetInvalidation"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+    "Roles": [
+     {
+      "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "3423a042b818e31c1e34a19d6689ab2e5f9b70fcbe9e71df66f241b20a200bd9.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_CA_BUNDLE": "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem"
+     }
+    },
+    "Handler": "index.handler",
+    "Layers": [
+     {
+      "Ref": "DeployFrontendAwsCliLayerD774ED8F"
+     }
+    ],
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.13",
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Resource",
+    "aws:asset:path": "asset.3423a042b818e31c1e34a19d6689ab2e5f9b70fcbe9e71df66f241b20a200bd9",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CLogGroup817B64E9": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/LogGroup/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/+VYWW8bNxD+LdnHgN6mLpoCfpPlOBDqxoLk5qGCYYzI0Yo2l9zykLJZ7H8veOzhI2niJI2DPhhazgxnPg7nog/zw59/zV88g705oOzmQPB13iwt0BsCe3PVID3Mm7cVXTVZCe8m7012lD3PSCbBvgaLe6gjpb0k0418O5+SuVsLTpduLdGumgx2wAWsueC2/ktJTPt3FZ2x9E0508dC0Zu0LqGKSmbVuTwDJ+k2O7LaIcl4tXs5vSMOxvBCzqrdywljGo05l1ONYLmSERp5IigCEMbe9K7LjlbZ8+zyyQB8GihiKMUA8l8L5SxewFrgQB9oE2MU5UFBL+w/Xs3m/mdwNplrvgOLXz0yNyDME/D5l8F4OkieCIwYhTNpUUvsYyjWuLSaWAt0W6K0ZInUaW7r11q5atV4sJ0pIdR+IsS5s2vlJIvJkUrBTBbe+sIJzI5WTUZBzqTgEiMlphFVUiL12Lri6yT/22HyRri8voww9mqs0otHNvHKLr+BXRL8/MnWH+WZkaLPs/Yofzxo7evh/kqaYpUcx909QlLREqQmb6bCGYt6FJ1RR6KTU9AF+Kpqbk5wwyX3Vx8Mf+Zf0HpbDZkqaYFL1CNaMrhEveMUV+PdieaR63yBlTLcKl0fg8HVJeFQ5s1CCfRV3BhXIjuus6MmqzSXlFcgJpQqJ+2Q7q5Ev2FChxxPfr5Q827XXAlOfVdu2hgZIcFjZvS8PtU+yvy43kdjJplWAt9AiUO5/D5H+L9xv+DKSpBQIAsqOZpQcce0eqKT7KcA+e8v9DIOVgJJJMdilIxdKM+5h+E+mbGlBYu+XZpbZu+Tv7X+H5X8ffwSrj/efEsMUo3WxPDVebMM61WTFShRh2ruCUuruSx8rpjR+gLLSoDtJrp+S2D+jnWi4zsqHMO5k9S6NJSlF4UMnGUFFNOA1/aNUGOYwzTaC9AF2mE8W3UwkgEb+KMW+PC2lmhm8uYELKzB4EwaC5L6poOy4H4w7b4u6qo7lOGyEPinQb1QNoCfVJXgdBguSdr0FrUJtCbbOCH6ZZpor5Uek1qSVaChRIs6NPdTKLmob2m8RWK4ASesRyKHfpHxdIoR5GEgYemofYMhGdXIUFoOopsCzXjEMCnUgpb4tDLh2sNnMpJeXqF9Yal2Q33JGBqrVe3vIe7uJmiGhmpejbw2wHycqe6yT45HliKhu9qWoABjOQW6xbzpn5u96NQz0sDUEqEKkzdnquhAa7TeVx7ybz6d7q5FEh0aeEDUaejNCwVsDQIk5bLYHebNKIbOFLDjwEN9a2YaM8h4AzfWZ9rdUS5uSszxhpgH/ZlHy5aYX/Lm2NGbkPNr/6SKD68JpWi6CPnQJZMMnFUnKNDi+foaqb/AMPIGLFEviT+p1TTZOixH3hrzk3CcC1tChXJso5W0eXOuecFlxDULIWzrVXfsqRc89YIPiZETbqzmaxcm4KZLpWPcwo4r7YNOhW1dPHLco55rZRVVw7E1Mq6R2gOrDrbWVsZHZdK1UMpGF4wjc2TWu/qqYVgJVftilMeTnvQEAsagNfnE/7REQLlmEGL2DGrsagdZhnpklTz15TSexznevaSFlx2SGOWOayW9/l7A6507XSnT1QTLS1Suk9Ch4cSqhaXS9ZK/7whYbbFEDWJplYYCR6yH0zkQNlygqY3FsgOREqSrSYp1WrYgmUDdQXHSYxvPxn+gBV/W0htq/Oq7wwod85KM/PSvzvmRHPFqjH44cGSejU8ag7HzQ9uSBRrl9PBES9XDGavKD/A2smPckZtrteMMtU9ZEmJ3aaHgskgRfBWcfgV7QwXPJ3szFTygW6V/yZw7WznbEqkY5tfmp93hYX74In/x7NpwfpAOni/i7z++fZZu3xYAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "SimulationEngineStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "ALBDNSNAME": {
+   "Value": {
+    "Fn::GetAtt": [
+     "ALBAEE750D2",
+     "DNSName"
+    ]
+   }
+  },
+  "CloudFrontURL": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Fn::GetAtt": [
+        "Distribution830FAC52",
+        "DomainName"
+       ]
+      }
+     ]
+    ]
+   }
+  },
+  "S3BucketName": {
+   "Value": {
+    "Ref": "FrontendBucketEFE2E19C"
+   }
+  },
+  "EcsClusterName": {
+   "Value": {
+    "Ref": "SimEngineCluster40B92417"
+   }
+  },
+  "EcsApiServiceArn": {
+   "Value": {
+    "Ref": "ApiServiceC9037CF0"
+   }
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-3"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-4"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Equals": [
+      {
+       "Ref": "AWS::Region"
+      },
+      "us-west-2"
+     ]
+    }
+   ]
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
