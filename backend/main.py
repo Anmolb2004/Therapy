@@ -1,13 +1,11 @@
-# backend/main.py
 import uuid
 import json
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
-# --- UPDATED IMPORTS ---
-from worker import run_simulation_and_evaluation_task # Celery task
-from db import create_simulation_job, get_job_status_and_results, get_db # New DB functions and dependency
+from worker import run_simulation_and_evaluation_task 
+from db import create_simulation_job, get_job_status_and_results, get_db 
 from schemas import SimulationRequest
 
 app = FastAPI(
@@ -24,7 +22,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load personas at startup
 try:
     with open('data/personas.json', 'r') as f:
         PERSONAS = json.load(f)
@@ -33,14 +30,13 @@ except FileNotFoundError:
     PERSONAS = []
     print("Warning: data/personas.json not found.")
 
-# --- API Endpoints ---
 
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the Async Simulation Engine API (PostgreSQL)"}
 
 @app.get("/personas")
-def get_personas_endpoint(): # Renamed slightly to avoid conflict
+def get_personas_endpoint(): 
     return {"personas": PERSONAS}
 
 @app.post("/start-simulation", status_code=202)
@@ -52,11 +48,8 @@ def start_simulation_endpoint(request: SimulationRequest, db: Session = Depends(
     job_id = str(uuid.uuid4())
     print(f"--- API: Received request. Assigning Job ID: {job_id} ---")
 
-    # 1. Create the initial job entry in PostgreSQL
     create_simulation_job(db, job_id=job_id)
 
-    # 2. Send the processing task to the Celery worker via Redis
-    #    Pass request data as a dict for Celery compatibility
     run_simulation_and_evaluation_task.delay(job_id, request.dict())
 
     print(f"--- API: Job {job_id} created and task queued. ---")
@@ -73,16 +66,12 @@ def get_simulation_results_endpoint(job_id: str, db: Session = Depends(get_db)):
     job_data = get_job_status_and_results(db, job_id=job_id)
 
     if not job_data:
-        # It might take a moment for the job record to appear, don't raise 404 immediately
-        # Check if the job exists at all, maybe return QUEUED if not found yet?
-        # For now, stick to 404 if truly not found after a reasonable time.
         print(f"--- API: Job {job_id} not found in database. ---")
         raise HTTPException(status_code=404, detail="Job not found or still initializing.")
 
     print(f"--- API: Returning status for Job {job_id}: {job_data['status']} ---")
     return job_data
 
-# --- Optional: Example Analytics Endpoint ---
 @app.get("/analytics/compare-bots")
 def compare_bots_endpoint(db: Session = Depends(get_db)):
     """
@@ -90,21 +79,16 @@ def compare_bots_endpoint(db: Session = Depends(get_db)):
     Calculates average scores for each bot version.
     """
     from sqlalchemy import func
-    from models import SimulationResult # Import the result model
+    from models import SimulationResult 
 
     print("--- API: Running bot comparison analytics query ---")
     try:
         results = db.query(
             SimulationResult.therapist_version,
             func.count(SimulationResult.id).label('total_simulations'),
-            # Example: Extracting and averaging a score from the JSON field
-            # This might need adjustment based on your exact JSON structure in 'evaluation'
-            # Assuming evaluation = {"empathy_score": 8, ...}
             func.avg(SimulationResult.evaluation['empathy_score'].astext.cast(Integer)).label('avg_empathy'),
-            # Add other average calculations here...
         ).group_by(SimulationResult.therapist_version).all()
 
-        # Convert results to a list of dictionaries
         comparison = [
             {
                 "bot_version": version,

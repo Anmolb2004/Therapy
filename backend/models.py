@@ -1,4 +1,3 @@
-# backend/models.py
 import os
 import json
 import boto3
@@ -18,7 +17,7 @@ def get_database_url():
     db_secret_arn = os.getenv("DB_SECRET_ARN")
     
     if db_secret_arn:
-        # --- Running in AWS: Fetch the secret ---
+
         print("DB_SECRET_ARN found, fetching credentials from AWS Secrets Manager...")
         session = boto3.session.Session()
         client = session.client(service_name='secretsmanager', region_name=os.getenv("AWS_REGION", "us-east-1"))
@@ -29,7 +28,7 @@ def get_database_url():
             
             username = secret['username']
             password = secret['password']
-            host = os.getenv("DB_HOST") # We pass the host from CDK
+            host = os.getenv("DB_HOST") 
             port = secret.get('port', 5432)
             dbname = secret.get('dbname', 'simdb')
             
@@ -40,7 +39,6 @@ def get_database_url():
             print(f"!!! FATAL: Could not fetch or parse DB secret from AWS: {e} !!!")
             raise e
     else:
-        # --- Running Locally (docker-compose): Use default URL ---
         print("DB_SECRET_ARN not found, using default DATABASE_URL for local development.")
         return os.getenv("DATABASE_URL", "postgresql://user:password@sim-postgres/simdb")
 

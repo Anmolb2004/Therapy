@@ -1,4 +1,3 @@
-// frontend/src/pages/SelectPersonas.jsx
 import { Link } from 'react-router-dom';
 import { FaUsers, FaArrowRight, FaRobot, FaChartLine, FaComments } from 'react-icons/fa';
 

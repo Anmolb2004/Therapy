@@ -1,5 +1,3 @@
-// frontend/src/App.jsx
-
 import { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -8,7 +6,6 @@ import ConfigureSimulation from './pages/ConfigureSimulation';
 import ResultsPage from './pages/ResultsPage';
 import ChatModal from './components/ChatModal';
 
-// --- CORRECTED for Vite: Use import.meta.env ---
 const API_URL = "http://simula-albae-uvqkllrso5kl-1348279005.us-west-2.elb.amazonaws.com";
 
 const THERAPIST_VERSIONS = [
@@ -28,20 +25,17 @@ const EVALUATION_VERSIONS = [
 function App() {
   const navigate = useNavigate();
 
-  // --- LIFTED STATE: All state is managed here ---
   const [personas, setPersonas] = useState([]);
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [activeTranscript, setActiveTranscript] = useState(null);
   const [loadingMessage, setLoadingMessage] = useState('');
 
-  // --- Form Selection State ---
   const [selectedPersonaIds, setSelectedPersonaIds] = useState(new Set());
   const [selectedTherapistIds, setSelectedTherapistIds] = useState(new Set(['v2_cbt', 'v4_claude_cbt']));
   const [selectedEvaluation, setSelectedEvaluation] = useState(EVALUATION_VERSIONS[0].id);
   const [numTurns, setNumTurns] = useState(5);
 
-  // Fetch personas on initial load
   useEffect(() => {
     const fetchPersonas = async () => {
       try {
@@ -52,7 +46,6 @@ function App() {
     fetchPersonas();
   }, []);
   
-  // Generic handler for all checkbox groups
   const handleCheckboxChange = (id, state, setState) => {
     const newSelectedIds = new Set(state);
     if (newSelectedIds.has(id)) newSelectedIds.delete(id);
@@ -60,7 +53,6 @@ function App() {
     setState(newSelectedIds);
   };
 
-  // The new polling function to check for job status
   const pollForResults = (jobId) => {
     const intervalId = setInterval(async () => {
       try {
@@ -83,12 +75,11 @@ function App() {
       } catch (error) {
         console.error("Polling failed:", error);
       }
-    }, 3000); // Check every 3 seconds
+    }, 3000); 
 
     return intervalId;
   };
 
-  // The updated simulation handler
   const handleRunSimulation = async () => {
     if (selectedPersonaIds.size === 0 || selectedTherapistIds.size === 0) {
       alert("Please select at least one persona and one therapist version.");
@@ -137,7 +128,6 @@ function App() {
       <Header />
       <ChatModal transcript={activeTranscript} onClose={() => setActiveTranscript(null)} />
       <Routes>
-        {/* --- THIS IS THE FULLY CORRECTED SECTION --- */}
         <Route 
           path="/" 
           element={
@@ -179,7 +169,6 @@ function App() {
             />
           } 
         />
-        {/* --- END OF CORRECTIONS --- */}
       </Routes>
     </div>
   );

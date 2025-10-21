@@ -21,8 +21,8 @@ export class SimulationEngineStack extends cdk.Stack {
     super(scope, id, props);
 
     const vpc = new ec2.Vpc(this, 'SimEngineVPC', { 
-    maxAzs: 2, // Still use two zones for high availability
-    natGateways: 1, // But only create one NAT Gateway for the whole VPC
+    maxAzs: 2, 
+    natGateways: 1, 
 });
 
     const albSg = new ec2.SecurityGroup(this, 'AlbSg', { vpc, allowAllOutbound: true });
@@ -51,8 +51,8 @@ export class SimulationEngineStack extends cdk.Stack {
         generateSecretString: {
             secretStringTemplate: JSON.stringify({
                 username: 'sim_user',
-                dbClusterIdentifier: 'simdb', // required property
-                host: '', // will be filled in later
+                dbClusterIdentifier: 'simdb', 
+                host: '', 
                 port: 5432,
                 dbname: 'simdb'
             }),
@@ -93,11 +93,9 @@ export class SimulationEngineStack extends cdk.Stack {
     });
     const apiImage = ecs.ContainerImage.fromEcrRepository(apiRepo, "latest");
     
-    // Non-secret environment variables
     const sharedEnvironment = {
         CELERY_BROKER_URL: `redis://${redisCluster.attrRedisEndpointAddress}:${redisCluster.attrRedisEndpointPort}/0`,
         CELERY_RESULT_BACKEND: `redis://${redisCluster.attrRedisEndpointAddress}:${redisCluster.attrRedisEndpointPort}/0`,
-        // We pass the ARN of the secret, and the code will fetch it.
         DB_SECRET_ARN: dbCredentialsSecret.secretArn,
         DB_HOST: dbInstance.dbInstanceEndpointAddress,
         AWS_REGION: this.region,

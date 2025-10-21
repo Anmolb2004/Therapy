@@ -1,5 +1,3 @@
-# backend/agents.py
-
 import os
 from dotenv import load_dotenv
 from pathlib import Path
@@ -11,12 +9,9 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.output_parsers import JsonOutputParser
 from pydantic.v1 import BaseModel, Field
 
-# --- SETUP (Unchanged) ---
 BACKEND_DIR = Path(__file__).resolve().parent
 load_dotenv(BACKEND_DIR / ".env")
 
-
-# --- AGENT DEFINITIONS ---
 
 def create_therapist_agent(therapist_version: str, chat_history: list):
     """
@@ -158,7 +153,6 @@ def create_persona_agent(persona: str, chat_history: list):
         ("human", "{user_input}"),
     ])
 
-    # Lower temperature for more controlled, consistent responses
     llm = ChatOpenAI(model="gpt-4o", temperature=0.5)
     chain = prompt_template | llm
 
@@ -169,9 +163,6 @@ def create_persona_agent(persona: str, chat_history: list):
     })
 
     return response.content
-
-
-# --- EVALUATION ENGINE ---
 
 class TherapyEvaluation(BaseModel):
     empathy_score: int = Field(description="Rate the therapist's empathy on a scale of 1 to 10.")

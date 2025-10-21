@@ -1,8 +1,5 @@
-# backend/db.py
 from sqlalchemy.orm import Session
-import models # Import the SQLAlchemy models we just defined
-
-# --- Job Management Functions ---
+import models 
 
 def create_simulation_job(db: Session, job_id: str):
     """Creates a new job record in the database."""
@@ -27,7 +24,6 @@ def update_simulation_job(db: Session, job_id: str, status: str, progress: str =
     else:
         print(f"Warning: Job {job_id} not found for update.")
 
-# --- Result Management Functions ---
 
 def add_simulation_result(db: Session, job_id: str, result_data: dict):
     """Adds a single simulation result associated with a job."""
@@ -38,31 +34,27 @@ def add_simulation_result(db: Session, job_id: str, result_data: dict):
             therapist_version=result_data['therapist_version'],
             evaluation_version=result_data['evaluation_version'],
             transcript=result_data['transcript'],
-            evaluation=result_data['evaluation'] # Directly store the JSON evaluation
+            evaluation=result_data['evaluation'] 
         )
         db.add(db_result)
         db.commit()
         print(f"Added result for job {job_id}, persona {result_data['persona_id']}, bot {result_data['therapist_version']}")
     except Exception as e:
-        db.rollback() # Important: Rollback on error to keep DB consistent
+        db.rollback() 
         print(f"Error adding result for job {job_id}: {e}")
 
 
-# --- Data Retrieval Functions ---
-
 def get_job_status_and_results(db: Session, job_id: str):
     """Fetches a job's status and all its associated results."""
-    # Use joinedload to efficiently fetch the job and all its results in one query
     from sqlalchemy.orm import joinedload
     job = db.query(models.SimulationJob).options(joinedload(models.SimulationJob.results)).filter(models.SimulationJob.id == job_id).first()
 
     if not job:
         return None
 
-    # Convert the SQLAlchemy results objects into simple dictionaries for the API response
     results_list = [
         {
-            "result_id": res.id, # Include result ID if needed
+            "result_id": res.id, 
             "persona_id": res.persona_id,
             "therapist_version": res.therapist_version,
             "evaluation_version": res.evaluation_version,
@@ -70,7 +62,7 @@ def get_job_status_and_results(db: Session, job_id: str):
             "evaluation": res.evaluation,
             "run_at": res.run_at
         }
-        for res in job.results # Access the loaded results directly
+        for res in job.results
     ]
 
     return {
@@ -82,9 +74,6 @@ def get_job_status_and_results(db: Session, job_id: str):
         "created_at": job.created_at
     }
 
-# --- Utility Functions ---
-
-# Dependency for FastAPI endpoints to get a database session
 def get_db():
     db = models.SessionLocal()
     try:

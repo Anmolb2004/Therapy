@@ -1,4 +1,3 @@
-// frontend/src/pages/ResultsPage.jsx
 import { Link } from 'react-router-dom';
 import ResultsDisplay from '../components/ResultsDisplay';
 import { FaChartBar, FaPlus, FaTrophy, FaCheckCircle, FaDownload } from 'react-icons/fa';

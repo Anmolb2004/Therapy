@@ -1,4 +1,3 @@
-// frontend/src/pages/ConfigureSimulation.jsx
 import { Link } from 'react-router-dom';
 import SimulationControls from '../components/SimulationControls';
 import { FaWrench, FaArrowLeft, FaRocket, FaBrain, FaShieldAlt, FaClock } from 'react-icons/fa';
@@ -8,7 +7,6 @@ function ConfigureSimulation(props) {
   
   return (
     <main className="max-w-7xl mx-auto animate-fadeIn">
-      {/* Progress Indicator */}
       <div className="mb-8">
         <div className="flex items-center justify-center gap-4 mb-6">
           <div className="flex items-center gap-2">
@@ -34,7 +32,6 @@ function ConfigureSimulation(props) {
         </div>
       </div>
 
-      {/* Hero Section */}
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/30 rounded-full text-primary text-sm font-semibold mb-6">
           <FaWrench className="animate-spin-slow" />
@@ -55,7 +52,6 @@ function ConfigureSimulation(props) {
         </p>
       </div>
 
-      {/* Quick Stats Cards */}
       <div className="grid md:grid-cols-3 gap-6 mb-10">
         <div className="bg-gradient-to-br from-surface/80 to-secondary/60 backdrop-blur-sm rounded-xl p-6 border border-border-color">
           <div className="flex items-center gap-4">
@@ -94,7 +90,6 @@ function ConfigureSimulation(props) {
         </div>
       </div>
 
-      {/* Main Configuration Card */}
       <div className="bg-surface rounded-2xl shadow-2xl border border-border-color overflow-hidden mb-10">
         <div className="bg-gradient-to-r from-primary/10 to-orange-600/10 p-8 border-b border-border-color">
           <div className="flex items-center justify-between">

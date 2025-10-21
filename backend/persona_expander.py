@@ -1,5 +1,3 @@
-# backend/persona_expander.py
-
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic.v1 import BaseModel, Field

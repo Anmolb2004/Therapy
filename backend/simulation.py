@@ -4,15 +4,14 @@ from persona_expander import expand_persona, format_expanded_persona
 from langchain_core.messages import HumanMessage, AIMessage, BaseMessage, SystemMessage
 from langgraph.graph import StateGraph, END
 
-# --- Graph state definition ---
+
 class GraphState(TypedDict):
     chat_history: List[BaseMessage]
-    persona: str  # This will now be the EXPANDED persona
+    persona: str  
     therapist_version: str
     turn_count: int
     max_turns: int
 
-# --- Node definitions ---
 def therapist_node(state: GraphState):
     """Generates the therapist's response."""
     print(f"--- Turn {state['turn_count'] + 1} (Therapist: {state['therapist_version']}) ---")
@@ -59,7 +58,6 @@ def persona_node(state: GraphState):
         state['turn_count'] = state['max_turns']
     return state
 
-# --- Conditional edge definition ---
 def should_continue(state: GraphState):
     """Determines whether to continue the conversation or end."""
     if state['turn_count'] >= state['max_turns']:
@@ -67,7 +65,6 @@ def should_continue(state: GraphState):
     else:
         return "continue"
 
-# --- Graph structure definition ---
 workflow = StateGraph(GraphState)
 
 workflow.add_node("therapist", therapist_node)
@@ -83,7 +80,6 @@ workflow.add_conditional_edges(
 
 langgraph_app = workflow.compile()
 
-# --- Utility to format the transcript ---
 def format_transcript(chat_history: list) -> str:
     """Formats the chat history into a readable string, including system messages."""
     transcript = ""
@@ -96,7 +92,6 @@ def format_transcript(chat_history: list) -> str:
             transcript += f"\nSYSTEM: {message.content}\n"
     return transcript.strip()
 
-# --- Main simulation function ---
 def run_simulation(persona: str, therapist_version: str, num_turns: int = 10):
     """
     Runs a single simulation conversation using the compiled LangGraph app.
@@ -105,7 +100,6 @@ def run_simulation(persona: str, therapist_version: str, num_turns: int = 10):
     print(f"\n--- Starting LangGraph Simulation ---")
     print(f"Short Persona Input: {persona}")
     
-    # ✨ EXPAND THE PERSONA AUTOMATICALLY
     print("\n🔄 Expanding persona into detailed profile...")
     try:
         expanded_persona_dict = expand_persona(persona)
@@ -120,7 +114,6 @@ def run_simulation(persona: str, therapist_version: str, num_turns: int = 10):
     print(f"\nTherapist Version: {therapist_version}")
     print(f"Max Turns: {num_turns}")
 
-    # Generate the initial opening message using the EXPANDED persona
     initial_prompt = "Introduce yourself to the therapist and briefly explain the main problem you are facing based on your persona."
     opening_message = ""
     try:
@@ -132,7 +125,6 @@ def run_simulation(persona: str, therapist_version: str, num_turns: int = 10):
 
         print(f"\nUser (Opening): {opening_message}")
 
-        # Define the initial state with the EXPANDED persona
         initial_state = {
             "chat_history": [HumanMessage(content=opening_message)],
             "persona": expanded_persona,  # ✨ Using expanded version
@@ -141,7 +133,6 @@ def run_simulation(persona: str, therapist_version: str, num_turns: int = 10):
             "max_turns": num_turns
         }
 
-        # Invoke the LangGraph application
         final_state = langgraph_app.invoke(initial_state)
 
         print("\n--- Simulation Complete ---")
@@ -153,9 +144,6 @@ def run_simulation(persona: str, therapist_version: str, num_turns: int = 10):
         traceback.print_exc()
         return f"SYSTEM: Simulation failed critically. Error: {e}"
 
-
-
-# --- Optional: Direct expansion for testing ---
 def test_persona_expansion(short_persona: str):
     """Test function to see what an expanded persona looks like."""
     expanded = expand_persona(short_persona)
